@@ -3,6 +3,14 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// Prilagodi veličinu canvas-a ekranu
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
 canvas.width = 800;
 canvas.height = 600;
 
@@ -172,3 +180,4 @@ canvas.addEventListener('touchstart', function (e) {
     }
 }, { passive: false });
 gameLoop();
+
