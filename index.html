@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Beskonačni Platformer</title>
     <style>
       body {
@@ -10,11 +10,15 @@
         padding: 0;
         overflow: hidden;
         background-color: #87ceeb;
+        height: 100vh;
+        width: 100vw;
       }
       canvas {
         display: block;
-        background-color: #fff;
-        margin: 0 auto;
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
       }
     </style>
   </head>
@@ -23,6 +27,24 @@
     <canvas id="gameCanvas"></canvas>
 
     <!-- JavaScript fajl za logiku igre -->
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Funkcija koja menja velicinu canvasa na velicinu ekrana
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      // Poziv pri ucitavanju i kada se menja orijentacija ekrana
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      // Test crtanje da vidis da radi
+      ctx.fillStyle = "red";
+      ctx.fillRect(50, 50, 100, 100);
+    </script>
     <script src="game.js"></script>
   </body>
 </html>
