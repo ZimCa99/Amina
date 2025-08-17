@@ -174,10 +174,10 @@ canvas.addEventListener('mousedown', function () {
 });
 canvas.addEventListener('touchstart', function (e) {
     e.preventDefault();
-    alert('touch!');
     if (!isJumping) {
         isJumping = true;
         velocity = 15;
     }
 }, { passive: false });
 gameLoop();
+
