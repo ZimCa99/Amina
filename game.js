@@ -180,4 +180,3 @@ canvas.addEventListener('touchstart', function (e) {
     }
 }, { passive: false });
 gameLoop();
-
