@@ -156,4 +156,19 @@ document.addEventListener('keydown', function (event) {
         velocity = 15;
     }
 });
+
+// Dodaj skok na klik/tap za telefon i desktop
+canvas.addEventListener('mousedown', function () {
+    if (!isJumping) {
+        isJumping = true;
+        velocity = 15;
+    }
+});
+canvas.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    if (!isJumping) {
+        isJumping = true;
+        velocity = 15;
+    }
+}, { passive: false });
 gameLoop();
