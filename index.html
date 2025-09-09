@@ -2,29 +2,246 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Beskonačni Platformer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Love You</title>
     <style>
       body {
         margin: 0;
         padding: 0;
+        background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+        height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: #fff;
+        text-align: center;
         overflow: hidden;
-        background-color: #87ceeb;
-        height: 100vh;
-        width: 100vw;
       }
-      canvas {
-        display: block;
-        margin: 0;
-        padding: 0;
+
+      h1 {
+        font-size: 3em;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      p {
+        font-size: 1.5em;
+        margin-top: 1em;
+        animation: fadeIn 3s ease-in-out;
+      }
+
+      .heart {
+        color: red;
+        font-size: 4em;
+        animation: pulse 1.5s infinite;
+        margin-top: 20px;
+      }
+
+      .heart-img {
+        width: 80px;
+        height: 80px;
+        animation: pulse 1.5s infinite;
+      }
+
+      .floating-heart {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 100vh;
+        opacity: 0.8;
+        animation: floatUp linear forwards;
+        object-fit: cover;
+        /* Dodaj masku u obliku srca */
+        clip-path: path(
+          "M20,6 C20,2 32,2 32,10 C32,18 20,28 20,28 C20,28 8,18 8,10 C8,2 20,2 20,6 Z"
+        );
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes floatUp {
+        0% {
+          top: 100vh;
+          opacity: 0.8;
+          transform: scale(1) rotate(0deg);
+        }
+        80% {
+          opacity: 1;
+          transform: scale(1.2) rotate(15deg);
+        }
+        100% {
+          top: -50px;
+          opacity: 0;
+          transform: scale(0.8) rotate(-15deg);
+        }
+      }
+
+      @keyframes explode {
+        0% {
+          transform: translate(-50%,-50%) scale(1);
+          opacity: 1;
+        }
+        80% {
+          transform: translate(-50%,-50%) scale(1.5);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translate(-50%,-50%) scale(0.1);
+          opacity: 0;
+        }
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 20px;
+        font-size: 0.9em;
+        color: #fff;
+        opacity: 0.8;
+      }
+
+      /* Dodato za lebdeća srca */
+      #floating-hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100vw;
         height: 100vh;
+        pointer-events: none;
+        z-index: 10;
       }
     </style>
   </head>
   <body>
-    <!-- Canvas za igru -->
-    <canvas id="gameCanvas"></canvas>
-    <script src="game.js"></script>
+    <!-- Intro srce -->
+    <div
+      id="intro-heart-container"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        background: transparent;
+      "
+    >
+      <div
+        id="intro-heart"
+        class="heart"
+        style="
+          font-size: 18em;
+          color: red;
+          animation: pulse 1.5s infinite;
+          cursor: pointer;
+          margin: 0;
+        "
+      >
+        ❤️
+      </div>
+      <div
+        style="
+          font-size: 2em;
+          color: #fff;
+          margin-top: 30px;
+          text-shadow: 0 2px 8px #ff6f91;
+          font-weight: bold;
+          cursor: pointer;
+        "
+      >
+        Click me
+      </div>
+    </div>
+    <!-- Ostatak sajta, inicijalno sakriven -->
+    <div id="main-content" style="display: none">
+      <audio id="bg-music" src="song.mp3" autoplay loop hidden></audio>
+      <h1>Hey Love ❤️</h1>
+      <p>I just wanted to tell you something...</p>
+      <p style="margin-top: 2em">
+        <strong>I love you, deeply and truly.</strong>
+      </p>
+      <button
+        id="play-music"
+        style="
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 1em;
+          border-radius: 20px;
+          border: none;
+          background: #ff6f91;
+          color: #fff;
+          cursor: pointer;
+        "
+      >
+        ▶️ Play Song
+      </button>
+      <div class="heart">❤️</div>
+      <div id="floating-hearts"></div>
+      <div class="footer">Forever yours, Cazim</div>
+    </div>
+    <script>
+      // Animacija pucanja srca
+      document
+        .getElementById("intro-heart")
+        .addEventListener("click", function () {
+          this.style.animation = "explode 0.7s forwards";
+          setTimeout(() => {
+            document.getElementById("intro-heart-container").style.display = "none";
+            document.getElementById("main-content").style.display = "block";
+          }, 700);
+        });
+
+      // Dodaje lebdeća srca (sada slike)
+      function createHeart() {
+        const heart = document.createElement("img");
+        heart.className = "floating-heart";
+        heart.src = "heart.png";
+        heart.alt = "Heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.getElementById("floating-hearts").appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 5000);
+      }
+
+      setInterval(createHeart, 700);
+
+      // Play music on button click
+      document
+        .getElementById("play-music")
+        .addEventListener("click", function () {
+          const music = document.getElementById("bg-music");
+          music.currentTime = 30; // Počinje od 30. sekunde
+          music.play();
+          this.style.display = "none"; // Sakrij dugme nakon puštanja
+        });
+    </script>
   </body>
 </html>
