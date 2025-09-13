@@ -12,109 +12,75 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(6px);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      max-width: 500px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+      max-width: 520px;
       text-align: center;
       position: relative;
       overflow: hidden;
-    }
-    .emoji {
-      font-size: 3rem;
-      animation: floaty 3s ease-in-out infinite;
-      margin-bottom: 15px;
-    }
-    h1 {
-      color: #1e293b;
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #334155;
-      font-size: 1.1rem;
-      margin-bottom: 20px;
       animation: fadeIn 1s ease;
     }
+    h1 {
+      color: #1f2937;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #374151;
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
     button {
-      padding: 10px 18px;
+      padding: 12px 22px;
       border: none;
-      border-radius: 25px;
+      border-radius: 30px;
       margin: 5px;
       cursor: pointer;
       font-weight: bold;
-      transition: transform 0.2s;
+      transition: transform 0.2s, background 0.3s;
     }
     button:hover {
-      transform: scale(1.05);
+      transform: scale(1.07);
     }
     .btn-primary {
       background: #1e293b;
       color: white;
     }
-    .btn-secondary {
-      background: #fbbf24;
-      color: #1e293b;
-    }
-    .confetti-piece {
-      position: absolute;
-      top: -10px;
-      width: 10px;
-      height: 10px;
-      border-radius: 3px;
-      opacity: 0.95;
-      animation: confetti-fall 2s forwards;
-    }
-    @keyframes floaty {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-      100% { transform: translateY(0); }
+    .emoji-big {
+      font-size: 5rem;
+      display: none;
+      margin-top: 20px;
+      animation: popIn 0.6s ease;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes confetti-fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="emoji">😊</div>
-    <h1>Hej, super si danas prošla!</h1>
-    <p id="message">Završen je posao! Sad se opusti — zaslužuješ večeras pun osmeh. ❤️</p>
-    <button class="btn-primary" onclick="toggleMessage()">Sakrij / Pokaži</button>
-    <button class="btn-secondary" onclick="makeConfetti()">Pošalji osmeh ✨</button>
+    <h1>Hej! 🎉</h1>
+    <p>Završem je posao — sad očekujem tvoj osmeh. 😍</p>
+    <button class="btn-primary" onclick="showSmile()">Pokaži osmeh</button>
+    <div id="bigSmile" class="emoji-big">😁</div>
   </div>
 
   <script>
-    const message = document.getElementById("message");
-    function toggleMessage() {
-      if (message.style.display === "none") {
-        message.style.display = "block";
-      } else {
-        message.style.display = "none";
-      }
-    }
-
-    function makeConfetti() {
-      const colors = ["#F472B6", "#60A5FA", "#FBBF24", "#34D399", "#A78BFA"];
-      for (let i = 0; i < 20; i++) {
-        const el = document.createElement("span");
-        el.className = "confetti-piece";
-        el.style.left = Math.random() * 100 + "%";
-        el.style.background = colors[Math.floor(Math.random() * colors.length)];
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2200);
-      }
+    function showSmile() {
+      const smile = document.getElementById("bigSmile");
+      smile.style.display = "block";
     }
   </script>
 </body>
