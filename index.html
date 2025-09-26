@@ -1,213 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Cube Jumper</title>
-  <style>
-    :root{--bg:#0f1724;--ground:#111827;--cube:#22c55e;--ob:#ef4444;--coin:#facc15}
-    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    .wrap{display:flex;align-items:center;justify-content:center;height:100%;background:linear-gradient(180deg,#071029 0%, #092136 60%);padding:12px;box-sizing:border-box}
-    .game-card{width:100%;max-width:900px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:14px;box-shadow:0 8px 30px rgba(2,6,23,0.6);overflow:hidden}
-    header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;color:#e6eef8}
-    header h1{font-size:16px;margin:0}
-    header .score{font-weight:700}
-    .canvas-wrap{position:relative;padding:0;background:var(--bg)}
-    canvas{display:block;width:100%;height:auto}
-    .controls{position:absolute;left:12px;right:12px;bottom:12px;display:flex;justify-content:space-between}
-    .btn{background:rgba(255,255,255,0.06);backdrop-filter:blur(4px);padding:10px 14px;border-radius:10px;color:#e6eef8;font-weight:600}
-    .overlay{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#e6eef8}
-    .big-btn{background:var(--coin);color:#111;padding:10px 16px;border-radius:10px;font-weight:800}
-    footer{padding:8px 12px;color:#94a3b8;font-size:13px}
-    @media (orientation:landscape){.wrap{padding:18px}}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="game-card" role="application">
-      <header>
-        <h1>Cube Jumper</h1>
-        <div class="score">Score: <span id="score">0</span> • High: <span id="high">0</span></div>
-      </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Igra za tebe 💖</title>
+    <style>
+      body {
+        background-color: #fff0f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        overflow: hidden;
+      }
 
-      <div class="canvas-wrap">
-        <canvas id="game"></canvas>
-        <div class="controls">
-          <div class="btn">Tap / Space = Jump</div>
-          <div class="btn">Avoid red, collect yellow</div>
-        </div>
-        <div id="overlay" class="overlay"></div>
-      </div>
+      h1 {
+        color: #ff1493;
+        font-size: 32px;
+        text-align: center;
+        margin: 20px;
+      }
 
-      <footer>Tap the canvas to start. Works on phones — play in landscape for best experience.</footer>
-    </div>
-  </div>
+      #game-area {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 90vw;
+        margin-top: 20px;
+        gap: 15px;
+      }
 
-<script>
-// Single-file Cube Jumper
-const canvas = document.getElementById('game');
-const overlay = document.getElementById('overlay');
-const scoreEl = document.getElementById('score');
-const highEl = document.getElementById('high');
-let ctx, W, H, scale;
+      .heart {
+        width: 60px;
+        height: 60px;
+        background-color: #ff69b4;
+        border-radius: 50%;
+        color: white;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.3s;
+        box-shadow: 0 0 10px #ff1493;
+        user-select: none;
+      }
 
-function resize(){
-  const parent = canvas.parentElement;
-  const rect = parent.getBoundingClientRect();
-  W = Math.min(rect.width, 900);
-  scale = W / 900;
-  H = Math.max(400 * scale, rect.height * 0.45);
-  canvas.width = Math.round(W * devicePixelRatio);
-  canvas.height = Math.round(H * devicePixelRatio);
-  canvas.style.width = W + 'px';
-  canvas.style.height = H + 'px';
-  ctx = canvas.getContext('2d');
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-}
+      .heart:hover {
+        transform: scale(1.2);
+      }
 
-const d = window.devicePixelRatio ? { devicePixelRatio: window.devicePixelRatio } : { devicePixelRatio: 1 };
-window.addEventListener('resize', resize);
-resize();
+      .word {
+        font-size: 28px;
+        color: #ff1493;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+      }
 
-let running=false, gameOver=false;
-let score=0, high=localStorage.getItem('cubeJumperHigh')||0;
-highEl.textContent = high;
+      #final-message {
+        font-size: 36px;
+        color: #e60073;
+        margin-top: 40px;
+        opacity: 0;
+        animation: fadeIn 2s forwards;
+      }
 
-const player = {
-  x:120, y:0, w:48, h:48,
-  vy:0, onGround:false
-};
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>💖 Klikni srca da otkriješ poruku 💖</h1>
 
-const gravity = 1500;
-const jumpSpeed = -620;
+    <div id="game-area"></div>
+    <div id="final-message"></div>
 
-let obstacles=[];
-let coins=[];
-let obstacleTimer=0, obstacleInterval=1.2;
-let speed=320;
+    <script>
+      const poruka = "Ti si moje sve i volim te najviše na svetu!";
+      const reci = poruka.split(" ");
+      const gameArea = document.getElementById("game-area");
+      const finalMessage = document.getElementById("final-message");
 
-function start(){
-  running=true; gameOver=false; score=0; obstacles=[]; coins=[];
-  player.y = 0; player.vy=0; player.onGround=true;
-  obstacleTimer=0; speed=300; obstacleInterval=1.1;
-  overlay.innerHTML = '';
-  lastT = performance.now();
-  loop(lastT);
-}
+      let brojKlikova = 0;
 
-function end(){
-  running=false; gameOver=true;
-  overlay.innerHTML = `<div style="text-align:center"><h2>Game Over</h2><p>Score: ${score}</p><button class="big-btn" id="retry">Play again</button></div>`;
-  document.getElementById('retry').addEventListener('click', ()=>start());
-  if(score>high){high=score;localStorage.setItem('cubeJumperHigh',high);highEl.textContent=high}
-}
+      reci.forEach((rec, index) => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "💖";
 
-function spawnObstacle(){
-  const w = 40 + Math.random()*40;
-  const h = 40 + Math.random()*80;
-  const x = W + 40;
-  obstacles.push({x,w,h,passed:false});
-}
+        heart.addEventListener("click", () => {
+          if (!heart.clicked) {
+            heart.textContent = rec;
+            heart.style.backgroundColor = "#ffe6f0";
+            heart.style.color = "#ff1493";
+            heart.clicked = true;
+            brojKlikova++;
 
-function spawnCoin(){
-  const r = 10 + Math.random()*8;
-  const x = W + 40 + Math.random()*80;
-  coins.push({x,y:r+20 + Math.random()*(H*0.35 - 40),r, collected:false});
-}
+            if (brojKlikova === reci.length) {
+              // Sve reči su otkrivene
+              setTimeout(() => {
+                finalMessage.textContent =
+                  "💌 Volim te više nego što reči mogu da kažu.";
+              }, 1000);
+            }
+          }
+        });
 
-function rectsCollide(a,b){
-  return !(a.x+a.w < b.x || a.x > b.x + b.w || a.y + a.h < b.y || a.y > b.y + b.h);
-}
-
-let lastT = 0;
-function loop(t){
-  if(!running) return;
-  const dt = Math.min(0.032, (t - lastT)/1000);
-  lastT = t;
-
-  if(!player.onGround || player.vy!==0){
-    player.vy += gravity * dt;
-    player.y += player.vy * dt;
-    if(player.y > groundY - player.h){ player.y = groundY - player.h; player.vy=0; player.onGround=true }
-  }
-
-  obstacleTimer += dt;
-  if(obstacleTimer > obstacleInterval){ spawnObstacle(); if(Math.random()<0.6) spawnCoin(); obstacleTimer = 0; if(obstacleInterval>0.6) obstacleInterval *= 0.98; speed += 6 }
-
-  for(let ob of obstacles){ ob.x -= speed * dt }
-  for(let c of coins){ c.x -= speed * dt }
-
-  obstacles = obstacles.filter(o=>o.x + o.w > -50);
-  coins = coins.filter(c=>c.x + c.r > -50 && !c.collected);
-
-  const playerRect = {x:player.x, y:player.y, w:player.w, h:player.h};
-  for(let ob of obstacles){
-    const obRect = {x:ob.x, y:groundY - ob.h, w:ob.w, h:ob.h};
-    if(rectsCollide(playerRect, obRect)) { end(); return }
-    if(!ob.passed && ob.x + ob.w < player.x){ ob.passed=true; score += 10; scoreEl.textContent = score }
-  }
-  for(let c of coins){
-    const coinRect = {x:c.x - c.r, y:c.y - c.r, w:c.r*2, h:c.r*2};
-    if(!c.collected && rectsCollide(playerRect, coinRect)){ c.collected=true; score += 5; scoreEl.textContent = score }
-  }
-
-  render();
-  requestAnimationFrame(loop);
-}
-
-function render(){
-  ctx.save();
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = '#071029'; ctx.fillRect(0,0,W,H);
-  ctx.fillStyle = '#0b1220';
-  ctx.fillRect(0, groundY, W, H-groundY);
-  ctx.fillStyle = '#0f1724';
-  ctx.fillRect(0, groundY+4, W, 6);
-
-  ctx.fillStyle = '#0f1724';
-  ctx.fillRect(player.x + 6, player.y + player.h + 6, player.w, 6);
-  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--cube') || '#22c55e';
-  ctx.fillRect(player.x, player.y, player.w, player.h);
-
-  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ob') || '#ef4444';
-  for(let ob of obstacles){
-    const ox = ob.x, oy = groundY - ob.h;
-    ctx.fillRect(ox, oy, ob.w, ob.h);
-  }
-
-  for(let c of coins){
-    if(c.collected) continue;
-    ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--coin') || '#facc15'; ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,0.08)'; ctx.stroke();
-  }
-
-  ctx.restore();
-}
-
-function computeGround(){
-  return Math.round(H * 0.78);
-}
-let groundY = computeGround();
-
-function doJump(){
-  if(gameOver){ start(); return }
-  if(player.onGround){ player.vy = jumpSpeed; player.onGround = false }
-}
-
-// Input (mobile + desktop)
-canvas.addEventListener('touchstart', ()=>{ doJump(); });
-canvas.addEventListener('touchend', (e)=>{ e.preventDefault(); });
-canvas.addEventListener('mousedown', ()=>{ doJump(); });
-window.addEventListener('keydown', (e)=>{ if(e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); doJump(); } });
-
-overlay.innerHTML = `<div style="text-align:center"><h2>Cube Jumper</h2><p>Tap the screen to jump over obstacles and collect coins. Avoid red blocks.</p><button class="big-btn" id="start">Start</button></div>`;
-overlay.querySelector('#start').addEventListener('click', ()=>{
-  groundY = computeGround();
-  start();
-});
-
-window.addEventListener('resize', ()=>{ resize(); groundY = computeGround(); render(); });
-render();
-</script>
-</body>
+        gameArea.appendChild(heart);
+      });
+    </script>
+  </body>
 </html>
