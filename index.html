@@ -1,603 +1,365 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>I Love You</title>
+    <title>Pismo za Amina 💌</title>
     <style>
-      :root {
-        --bg-1: #0b0b0d;
-        --bg-2: #111217;
-        --card: #0f1416;
-        --muted: #9aa6af;
-        --accent: #ff6f91;
-        --accent-2: #ff9ab3;
-        --text: #e6eef3;
-        --glass: rgba(255, 255, 255, 0.02);
-      }
-
-      html,
-      body {
-        height: 100%;
-      }
-
       body {
         margin: 0;
-        padding: 0;
-        background: linear-gradient(120deg, var(--bg-1) 0%, var(--bg-2) 100%);
+        background: radial-gradient(circle at 50% 30%, #2b2b64, #131325 80%);
         height: 100vh;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         display: flex;
-        align-items: center;
-        justify-content: center;
         flex-direction: column;
-        color: var(--text);
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .stars {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+      .stars::before,
+      .stars::after {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background-image: radial-gradient(white 1px, transparent 1px);
+        background-size: 3px 3px;
+        animation: moveStars 120s linear infinite;
+        opacity: 0.2;
+      }
+      .stars::after {
+        animation-direction: reverse;
+        opacity: 0.1;
+      }
+      @keyframes moveStars {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .envelope {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        background: #ff8da1;
+        border-radius: 6px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 10px;
+      }
+      .envelope:hover {
+        transform: translateY(-5px);
+      }
+
+      .envelope::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: #ff6e8b;
+        clip-path: polygon(0 0, 50% 100%, 100% 0);
+        transform-origin: top;
+        transition: transform 1s ease;
+      }
+      .open .envelope::before {
+        transform: rotateX(180deg);
+      }
+
+      .paper {
+        width: 80%;
+        max-height: 50vh;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        opacity: 0;
+        transition: all 1s ease;
+        padding: 15px;
+        position: relative;
+        animation: sway 3s ease-in-out infinite alternate;
+      }
+      .open .paper {
+        opacity: 1;
+        bottom: auto;
+      }
+      @keyframes sway {
+        0% {
+          transform: rotate(-1deg);
+        }
+        100% {
+          transform: rotate(1deg);
+        }
+      }
+
+      .message {
         text-align: center;
-        overflow: hidden;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        color: #333;
+        font-size: 18px;
+        line-height: 1.6;
       }
-
       h1 {
-        font-size: 3em;
-        animation: fadeIn 2s ease-in-out;
-        color: var(--accent-2);
-        text-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
-      }
-
-      p {
-        font-size: 1.1em;
-        margin-top: 0.6em;
-        animation: fadeIn 3s ease-in-out;
-        color: var(--muted);
+        font-size: 22px;
+        color: #ff6b8a;
+        margin-bottom: 12px;
       }
 
       .heart {
-        color: #ff5a79;
-        font-size: 4em;
-        animation: pulse 1.5s infinite;
-        margin-top: 20px;
-        text-shadow: 0 4px 18px rgba(255, 90, 121, 0.12);
-      }
-
-      .heart-img {
-        width: 80px;
-        height: 80px;
-        animation: pulse 1.5s infinite;
-      }
-
-      .floating-heart {
-        width: 70px;
-        height: 70px;
         position: absolute;
-        top: 100vh;
-        opacity: 0.9;
-        animation: floatUp linear forwards;
-        object-fit: cover;
-        filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.6));
+        top: 50%;
+        left: 50%;
+        font-size: 40px;
+        color: white;
+        transform: translate(-50%, -50%);
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+      }
+      .open .heart {
+        opacity: 0;
       }
 
-      @keyframes fadeIn {
+      @keyframes floatHeart {
         0% {
-          opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(0) scale(1);
+          opacity: 1;
         }
         100% {
-          opacity: 1;
-          transform: translateY(0);
+          transform: translateY(-200px) scale(1.6);
+          opacity: 0;
+        }
+      }
+      .heart-float {
+        position: absolute;
+        font-size: 40px;
+        color: #ff6b8a;
+        animation: floatHeart 2.5s ease forwards;
+        z-index: 2;
+      }
+
+      .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #ff6b8a;
+        top: 0;
+        z-index: 2;
+        opacity: 0.9;
+        border-radius: 2px;
+        animation: fall 3s linear forwards;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(800px) rotate(360deg);
+          opacity: 0;
         }
       }
 
+      .typed {
+        white-space: pre-line;
+      }
+      .name-highlight {
+        color: #ff6b8a;
+        font-weight: bold;
+        animation: pulse 1.5s infinite alternate;
+      }
       @keyframes pulse {
         0% {
           transform: scale(1);
-        }
-        50% {
-          transform: scale(1.06);
+          opacity: 1;
         }
         100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes floatUp {
-        0% {
-          top: 100vh;
+          transform: scale(1.1);
           opacity: 0.9;
-          transform: scale(1) rotate(0deg);
-        }
-        80% {
-          opacity: 1;
-          transform: scale(1.1) rotate(10deg);
-        }
-        100% {
-          top: -50px;
-          opacity: 0;
-          transform: scale(0.9) rotate(-10deg);
         }
       }
 
-      @keyframes explode {
-        0% {
-          transform: translate(-50%, -50%) scale(1);
-          opacity: 1;
-        }
-        80% {
-          transform: translate(-50%, -50%) scale(1.4);
-          opacity: 0.8;
-        }
-        100% {
-          transform: translate(-50%, -50%) scale(0.1);
-          opacity: 0;
-        }
+      /* scrollbar */
+      .paper::-webkit-scrollbar {
+        width: 6px;
+      }
+      .paper::-webkit-scrollbar-thumb {
+        background-color: #ff8da1;
+        border-radius: 3px;
       }
 
-      .footer {
-        position: absolute;
-        bottom: 16px;
-        font-size: 0.9em;
-        color: var(--muted);
-        opacity: 0.9;
-        z-index: 20;
+      /* galerija */
+      .gallery {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        z-index: 2;
+      }
+      .gallery img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+      .gallery img:hover {
+        transform: scale(1.1);
       }
 
-      #floating-hearts {
+      /* lightbox */
+      #lightbox {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
         z-index: 10;
       }
-
-      /* Main content card */
-      #main-content {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.02),
-          rgba(255, 255, 255, 0.01)
-        );
-        border-radius: 14px;
-        padding: 36px 48px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        max-width: 900px;
-        width: calc(100vw - 60px);
-        color: var(--text);
-      }
-
-      #typed {
-        color: rgba(255, 235, 235, 0.9);
-      }
-
-      /* Buttons */
-      #play-music {
-        margin-top: 20px;
-        padding: 12px 26px;
-        font-size: 1em;
-        border-radius: 999px;
-        border: none;
-        background: linear-gradient(
-          90deg,
-          var(--accent) 0%,
-          var(--accent-2) 100%
-        );
-        color: #0b0b0d;
-        cursor: pointer;
-        box-shadow: 0 8px 28px rgba(255, 111, 145, 0.12);
-        transition: transform 0.12s ease, box-shadow 0.12s ease;
-      }
-      #play-music:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 38px rgba(255, 111, 145, 0.18);
-      }
-
-      /* Gallery thumbs */
-      .thumb {
+      #lightbox img {
+        max-width: 90%;
+        max-height: 90%;
         border-radius: 10px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.03);
       }
-
-      /* Slideshow controls */
-      #ss-close {
-        background: #111;
-        color: var(--text);
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        padding: 8px 10px;
-      }
-      #ss-prev,
-      #ss-next {
-        color: var(--text);
-      }
-
-      /* Confetti canvas on top */
-      #confetti {
-        z-index: 1500;
-        pointer-events: none;
-      }
-
-      /* Responsive tweaks */
-      @media (max-width: 640px) {
-        h1 {
-          font-size: 2.2em;
-        }
-        .heart {
-          font-size: 3.2em;
-        }
-        #main-content {
-          padding: 20px;
-          width: calc(100vw - 30px);
-        }
-        .thumb {
-          width: 64px;
-          height: 64px;
-        }
+      #closeLightbox {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <!-- Intro srce -->
-    <div
-      id="intro-heart-container"
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        background: transparent;
-      "
-    >
-      <div
-        id="intro-heart"
-        class="heart"
-        style="
-          font-size: 18em;
-          color: red;
-          animation: pulse 1.5s infinite;
-          cursor: pointer;
-          margin: 0;
-        "
-      >
-        ❤️
+    <div class="stars"></div>
+
+    <div class="envelope" id="envelope">
+      <div class="paper">
+        <div class="message">
+          <h1>💖 Srećan treći mesec ljubavi 💖</h1>
+          <p id="typed" class="typed"></p>
+          </p>
+        </div>
       </div>
-      <div
-        style="
-          font-size: 2em;
-          color: #fff;
-          margin-top: 30px;
-          text-shadow: 0 2px 8px #ff6f91;
-          font-weight: bold;
-          cursor: pointer;
-        "
-      >
-        Click me
-      </div>
+      <div class="heart">❤</div>
     </div>
-    <!-- Ostatak sajta, inicijalno sakriven -->
-    <div id="main-content" style="display: none">
-      <audio id="bg-music" src="song.mp3" autoplay loop hidden></audio>
-      <h1>Hey Love ❤️</h1>
-      <div
-        id="typed"
-        style="font-size: 1.2em; margin-top: 8px; color: #ffecec"
-      ></div>
-      <p>I just wanted to tell you something...</p>
-      <p style="margin-top: 2em">
-        <strong>I love you, deeply and truly.</strong>
-      </p>
-      <button
-        id="play-music"
-        style="
-          margin-top: 20px;
-          padding: 10px 20px;
-          font-size: 1em;
-          border-radius: 20px;
-          border: none;
-          background: #ff6f91;
-          color: #fff;
-          cursor: pointer;
-        "
-      >
-        ▶️ Play Song
-      </button>
-      <div class="heart">❤️</div>
-      <div id="floating-hearts"></div>
-      <div class="footer">Forever yours, Cazim</div>
+
+    <audio id="music" src="audio.mp3" preload="auto"></audio>
+
+    <!-- Galerija -->
+    <div class="gallery">
+      <img src="sl1.jpg" alt="Slika 1" />
+      <img src="sl2.jpg" alt="Slika 2" />
+      <img src="sl3.jpg" alt="Slika 3" />
     </div>
-    <div
-      id="gallery"
-      style="display: flex; gap: 8px; justify-content: center; margin-top: 20px"
-    >
-      <img
-        src="sl1.jpg"
-        class="thumb"
-        data-index="0"
-        style="
-          width: 80px;
-          height: 80px;
-          object-fit: cover;
-          border-radius: 8px;
-          cursor: pointer;
-        "
-      />
-      <img
-        src="sl2.jpg"
-        class="thumb"
-        data-index="1"
-        style="
-          width: 80px;
-          height: 80px;
-          object-fit: cover;
-          border-radius: 8px;
-          cursor: pointer;
-        "
-      />
-      <img
-        src="sl3.jpg"
-        class="thumb"
-        data-index="2"
-        style="
-          width: 80px;
-          height: 80px;
-          object-fit: cover;
-          border-radius: 8px;
-          cursor: pointer;
-        "
-      />
+
+    <!-- Lightbox -->
+    <div id="lightbox">
+      <span id="closeLightbox">×</span>
+      <img src="" alt="Velika slika" />
     </div>
-    <div
-      id="slideshow"
-      style="
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.85);
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-      "
-    >
-      <button
-        id="ss-close"
-        style="
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          font-size: 20px;
-          padding: 8px 12px;
-          border-radius: 6px;
-          background: #fff;
-          cursor: pointer;
-        "
-      >
-        X
-      </button>
-      <button
-        id="ss-prev"
-        style="
-          position: absolute;
-          left: 20px;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 28px;
-          background: transparent;
-          color: #fff;
-          border: none;
-          cursor: pointer;
-        "
-      >
-        ‹
-      </button>
-      <button
-        id="ss-next"
-        style="
-          position: absolute;
-          right: 20px;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 28px;
-          background: transparent;
-          color: #fff;
-          border: none;
-          cursor: pointer;
-        "
-      >
-        ›
-      </button>
-      <img
-        id="ss-img"
-        src=""
-        style="
-          max-width: 90%;
-          max-height: 90%;
-          border-radius: 12px;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-        "
-      />
-    </div>
-    <canvas
-      id="confetti"
-      style="position: fixed; inset: 0; pointer-events: none; z-index: 1500"
-    ></canvas>
-    <div
-      id="countdown"
-      style="font-size: 1.1em; margin-top: 12px; color: var(--muted)"
-    ></div>
+
     <script>
-      // Animacija pucanja srca
-      document
-        .getElementById("intro-heart")
-        .addEventListener("click", function () {
-          this.style.animation = "explode 0.7s forwards";
-          setTimeout(() => {
-            document.getElementById("intro-heart-container").style.display =
-              "none";
-            document.getElementById("main-content").style.display = "block";
-          }, 700);
-        });
+      const envelope = document.getElementById("envelope");
+      const music = document.getElementById("music");
+      const typed = document.getElementById("typed");
 
-      // Dodaje lebdeća srca (sada slike)
-      function createHeart() {
-        const heart = document.createElement("img");
-        heart.className = "floating-heart";
-        heart.src = "heart.png";
-        heart.alt = "Heart";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = 2 + Math.random() * 3 + "s";
-        document.getElementById("floating-hearts").appendChild(heart);
+      const text = `Draga Amina,  
 
-        setTimeout(() => {
-          heart.remove();
-        }, 5000);
-      }
+Tri meseca zajedno... i svaki trenutak sa tobom je magija.  
+Tvoj osmeh mi oboji dan, tvoj glas mi smiri dušu.  
+Hvala ti što si tu — nežna, iskrena, prava.  
 
-      setInterval(createHeart, 700);
+Zajedno smo prešli samo deo puta, ali svaki dan sa tobom  
+čini da želim više i više.  
 
-      // Play music on button click
-      document
-        .getElementById("play-music")
-        .addEventListener("click", function () {
-          const music = document.getElementById("bg-music");
-          music.currentTime = 30; // Počinje od 30. sekunde
-          music.play();
-          this.style.display = "none"; // Sakrij dugme nakon puštanja
-        });
+Volim te više nego što reči mogu opisati.  
+Tvoj zauvek, Cazim 💌`;
 
-      // Confetti minimal
-      (function () {
-        const c = document.getElementById("confetti");
-        const ctx = c.getContext("2d");
-        function resize() {
-          c.width = innerWidth;
-          c.height = innerHeight;
-        }
-        resize();
-        window.addEventListener("resize", resize);
-        function launch() {
-          const pieces = [];
-          for (let i = 0; i < 120; i++) {
-            pieces.push({
-              x: Math.random() * c.width,
-              y: Math.random() * c.height - c.height,
-              r: 4 + Math.random() * 8,
-              c: `hsl(${Math.random() * 360} 90% 60%)`,
-              vx: -2 + Math.random() * 4,
-              vy: 2 + Math.random() * 5,
-              rot: Math.random() * 360,
-            });
-          }
-          let t = 0;
-          const raf = () => {
-            ctx.clearRect(0, 0, c.width, c.height);
-            pieces.forEach((p) => {
-              p.x += p.vx;
-              p.y += p.vy;
-              p.rot += 8;
-              ctx.save();
-              ctx.translate(p.x, p.y);
-              ctx.rotate((p.rot * Math.PI) / 180);
-              ctx.fillStyle = p.c;
-              ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.6);
-              ctx.restore();
-            });
-            t++;
-            if (t < 200) requestAnimationFrame(raf);
-            else ctx.clearRect(0, 0, c.width, c.height);
-          };
-          raf();
-        }
-        // trigger when intro closes
-        document
-          .getElementById("intro-heart")
-          .addEventListener("click", () => setTimeout(launch, 700));
-      })();
-
-      // Simple slideshow
-      (function () {
-        const imgs = ["sl1.jpg", "sl2.jpg", "sl3.jpg"]; // zameni puteve po potrebi
-        const thumbs = document.querySelectorAll(".thumb");
-        const ss = document.getElementById("slideshow");
-        const ssImg = document.getElementById("ss-img");
-        let idx = 0;
-        thumbs.forEach((t) =>
-          t.addEventListener("click", (e) => {
-            idx = Number(e.currentTarget.dataset.index);
-            ssImg.src = imgs[idx];
-            ss.style.display = "flex";
-          })
-        );
-        document.getElementById("ss-close").onclick = () =>
-          (ss.style.display = "none");
-        document.getElementById("ss-prev").onclick = () => {
-          idx = (idx - 1 + imgs.length) % imgs.length;
-          ssImg.src = imgs[idx];
-        };
-        document.getElementById("ss-next").onclick = () => {
-          idx = (idx + 1) % imgs.length;
-          ssImg.src = imgs[idx];
-        };
-      })();
-
-      // Typed effect
-      (function () {
-        const el = document.getElementById("typed");
-        const msgs = [
-          "You are my sunshine.",
-          "You make me better every day.",
-          "Zauvijek tvoj — Cazim",
-        ];
-        let i = 0,
-          j = 0,
-          forward = true;
-        function tick() {
-          const msg = msgs[i];
-          el.textContent = msg.slice(0, j);
-          if (forward) {
-            j++;
-            if (j > msg.length) {
-              forward = false;
-              setTimeout(tick, 1200);
-              return;
-            }
+      let i = 0;
+      function typeText() {
+        if (i < text.length) {
+          let char = text.charAt(i);
+          if (text.substr(i, 5) === "Amina") {
+            typed.innerHTML += `<span class="name-highlight">Amina</span>`;
+            i += 5;
           } else {
-            j--;
-            if (j === 0) {
-              forward = true;
-              i = (i + 1) % msgs.length;
-            }
+            typed.innerHTML += char;
+            i++;
           }
-          setTimeout(tick, 60);
+          setTimeout(typeText, 45);
         }
-        tick();
-      })();
-
-      const target = new Date("2026-07-22T00:00:00"); // stavi svoj datum
-      function upd() {
-        const diff = target - new Date();
-        if (diff <= 0) {
-          document.getElementById("countdown").textContent = "Sretan dan! 🎉";
-          return;
-        }
-        const d = Math.floor(diff / 86400000),
-          h = Math.floor((diff % 86400000) / 3600000),
-          m = Math.floor((diff % 3600000) / 60000),
-          s = Math.floor((diff % 60000) / 1000);
-        document.getElementById(
-          "countdown"
-        ).textContent = `${d}d ${h}h ${m}m ${s}s do tvog posebnog dana!`;
       }
-      upd();
-      setInterval(upd, 1000);
+
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart-float");
+        heart.innerHTML = "❤";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = window.innerHeight / 2 + 50 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2500);
+      }
+
+      function createConfetti() {
+        const conf = document.createElement("div");
+        conf.classList.add("confetti");
+        conf.style.left = Math.random() * window.innerWidth + "px";
+        conf.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 3000);
+      }
+
+      envelope.addEventListener("click", () => {
+        if (!envelope.classList.contains("open")) {
+          envelope.classList.add("open");
+          setTimeout(typeText, 1000);
+          music.play().catch(() => {});
+          for (let j = 0; j < 25; j++) {
+            setTimeout(createHeart, j * 100);
+          }
+          for (let j = 0; j < 50; j++) {
+            setTimeout(createConfetti, j * 100);
+          }
+        }
+      });
+
+      // Galerija
+      const galleryImgs = document.querySelectorAll(".gallery img");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector("img");
+      const closeLightbox = document.getElementById("closeLightbox");
+
+      galleryImgs.forEach((img) => {
+        img.addEventListener("click", () => {
+          lightbox.style.display = "flex";
+          lightboxImg.src = img.src;
+        });
+      });
+      closeLightbox.addEventListener(
+        "click",
+        () => (lightbox.style.display = "none")
+      );
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) lightbox.style.display = "none";
+      });
     </script>
   </body>
 </html>
