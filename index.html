@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="sr">
 <head>
@@ -15,6 +16,7 @@ body, html {
     overflow:hidden;
     font-family: 'Georgia', serif;
     background:black;
+    color:white;
 }
 
 .slide {
@@ -24,19 +26,19 @@ body, html {
     background-size:cover;
     background-position:center;
     opacity:0;
-    transition:opacity 2s ease-in-out, transform 8s ease-in-out;
+    transition:opacity 2s ease-in-out, transform 10s ease-in-out;
 }
 
 .slide.active {
     opacity:1;
-    transform:scale(1.08);
+    transform:scale(1.1);
 }
 
 .overlay {
     position:absolute;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.45);
+    background:rgba(0,0,0,0.5);
 }
 
 .text {
@@ -45,48 +47,81 @@ body, html {
     width:100%;
     transform:translateY(-50%);
     text-align:center;
-    color:white;
     font-size:3rem;
     padding:0 60px;
     text-shadow:0 0 30px rgba(0,0,0,0.9);
 }
 
-.cursor {
-    border-right:3px solid white;
-    animation:blink .7s infinite;
-}
-
-@keyframes blink {
-    50% { border-color:transparent; }
-}
-
-.final-message {
+.letter {
     position:absolute;
-    bottom:15%;
+    top:50%;
     width:100%;
+    transform:translateY(-50%);
     text-align:center;
-    font-size:1.8rem;
+    font-size:1.6rem;
+    padding:0 80px;
+    line-height:1.8;
     opacity:0;
-    transition:opacity 3s ease;
+    transition:opacity 4s ease;
 }
+
+.final-name {
+    position:absolute;
+    top:50%;
+    width:100%;
+    transform:translateY(-50%);
+    text-align:center;
+    font-size:4rem;
+    opacity:0;
+    transition:opacity 4s ease;
+}
+
+.fade-black {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:black;
+    opacity:0;
+    transition:opacity 4s ease;
+}
+
 </style>
 </head>
 
 <body>
+
+<audio autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <div class="slide active" style="background-image:url('sl1.jpg')"></div>
 <div class="slide" style="background-image:url('sl2.jpg')"></div>
 <div class="slide" style="background-image:url('sl3.jpg')"></div>
 
 <div class="overlay"></div>
+<div class="fade-black" id="fade"></div>
 
-<div class="text">
-    <span id="typed"></span><span class="cursor"></span>
+<div class="text" id="mainText"></div>
+
+<div class="letter" id="letter">
+Amina…<br><br>
+
+Pre tebe su dani prolazili.  
+Sa tobom – svaki dan ima smisao.<br><br>
+
+Tvoj osmeh je moj mir.  
+Tvoj zagrljaj je moj dom.<br><br>
+
+Ne obećavam savršen život…  
+Ali obećavam da ću te voleti iskreno,  
+jako i bez granica.<br><br>
+
+Ako postoji zauvek…  
+Želim ga sa tobom. ❤️
 </div>
 
-<div class="final-message" id="final">
-    Amina, ti si najlepši deo mog života. ❤️  
-    Hvala ti što postojiš.
+<div class="final-name" id="finalName">
+Amina ❤️
 </div>
 
 <script>
@@ -95,11 +130,7 @@ const messages = [
 "Amina...",
 "Od trenutka kada sam te upoznao...",
 "Znao sam da si posebna.",
-"Svaka slika sa tobom čuva deo mog srca.",
-"Tvoj osmeh je moj mir.",
-"Tvoj zagrljaj je moj dom.",
-"I samo želim da znaš...",
-"Volim te više nego što reči mogu opisati."
+"Svaka slika sa tobom čuva deo mog srca."
 ];
 
 let slideIndex = 0;
@@ -107,34 +138,53 @@ let messageIndex = 0;
 let charIndex = 0;
 
 const slides = document.querySelectorAll(".slide");
-const typed = document.getElementById("typed");
-const finalMessage = document.getElementById("final");
+const text = document.getElementById("mainText");
+const letter = document.getElementById("letter");
+const finalName = document.getElementById("finalName");
+const fade = document.getElementById("fade");
 
 function typeWriter() {
     if (charIndex < messages[messageIndex].length) {
-        typed.innerHTML += messages[messageIndex].charAt(charIndex);
+        text.innerHTML += messages[messageIndex].charAt(charIndex);
         charIndex++;
-        setTimeout(typeWriter, 55);
+        setTimeout(typeWriter, 50);
     } else {
         setTimeout(nextScene, 2500);
     }
 }
 
 function nextScene() {
-    typed.innerHTML = "";
+    text.innerHTML = "";
     charIndex = 0;
     messageIndex++;
 
     if (messageIndex < messages.length) {
-        if (messageIndex % 3 === 0 && slideIndex < slides.length - 1) {
+
+        if (messageIndex % 2 === 0 && slideIndex < slides.length - 1) {
             slides[slideIndex].classList.remove("active");
             slideIndex++;
             slides[slideIndex].classList.add("active");
         }
+
         setTimeout(typeWriter, 800);
     } else {
-        finalMessage.style.opacity = "1";
+        showLetter();
     }
+}
+
+function showLetter() {
+    text.style.display = "none";
+    letter.style.opacity = "1";
+
+    setTimeout(() => {
+        fade.style.opacity = "1";
+    }, 9000);
+
+    setTimeout(() => {
+        letter.style.opacity = "0";
+        finalName.style.opacity = "1";
+        fade.style.opacity = "0";
+    }, 13000);
 }
 
 typeWriter();
