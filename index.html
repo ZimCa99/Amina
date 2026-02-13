@@ -1,166 +1,144 @@
+
+
 <!DOCTYPE html>
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
-<title>Amina ❤️ Nova godina</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Za Aminu ❤️</title>
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: radial-gradient(circle at top, #14001f, #000);
-  overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body, html {
+    height:100%;
+    overflow:hidden;
+    font-family: 'Georgia', serif;
+    background:black;
 }
 
-#intro {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #f5d0ff;
-  font-size: 1.8rem;
-  text-align: center;
-  cursor: pointer;
-  animation: pulse 2s infinite;
+.slide {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transition:opacity 2s ease-in-out, transform 8s ease-in-out;
 }
 
-@keyframes pulse {
-  0% { opacity: .5 }
-  100% { opacity: 1 }
+.slide.active {
+    opacity:1;
+    transform:scale(1.08);
 }
 
-#scene {
-  display: none;
-  position: absolute;
-  inset: 0;
+.overlay {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.45);
 }
 
-h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  color: #ffb7ff;
-  text-shadow: 0 0 25px #ff4fd8;
+.text {
+    position:absolute;
+    top:50%;
+    width:100%;
+    transform:translateY(-50%);
+    text-align:center;
+    color:white;
+    font-size:3rem;
+    padding:0 60px;
+    text-shadow:0 0 30px rgba(0,0,0,0.9);
 }
 
-.message {
-  font-size: 1.3rem;
-  max-width: 600px;
-  margin: 30px auto;
-  color: #ffe6ff;
-  line-height: 1.6;
+.cursor {
+    border-right:3px solid white;
+    animation:blink .7s infinite;
 }
 
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 2;
+@keyframes blink {
+    50% { border-color:transparent; }
 }
 
-canvas {
-  position: absolute;
-  inset: 0;
-}
-
-.heart {
-  position: absolute;
-  font-size: 22px;
-  color: #ff5fa2;
-  animation: float 8s linear infinite;
-}
-
-@keyframes float {
-  from { transform: translateY(100vh); opacity: 0 }
-  to { transform: translateY(-10vh); opacity: 1 }
+.final-message {
+    position:absolute;
+    bottom:15%;
+    width:100%;
+    text-align:center;
+    font-size:1.8rem;
+    opacity:0;
+    transition:opacity 3s ease;
 }
 </style>
 </head>
 
 <body>
 
-<div id="intro">Dodirni ekran ✨</div>
+<div class="slide active" style="background-image:url('sl1.jpg')"></div>
+<div class="slide" style="background-image:url('sl2.jpg')"></div>
+<div class="slide" style="background-image:url('sl3.jpg')"></div>
 
-<div id="scene">
-  <canvas id="sparkles"></canvas>
+<div class="overlay"></div>
 
-  <div class="center">
-    <h1>Amina ❤️</h1>
-    <div class="message">
-      Nova godina dolazi…  
-      a ja želim samo jedno –  
-      da svaka sledeća sekunda bude sa tobom ✨  
-      <br><br>
-      Srećna Nova godina, ljubavi 🎆  
-      <br>
-      <strong>— Ćazim</strong>
-    </div>
-  </div>
+<div class="text">
+    <span id="typed"></span><span class="cursor"></span>
+</div>
+
+<div class="final-message" id="final">
+    Amina, ti si najlepši deo mog života. ❤️  
+    Hvala ti što postojiš.
 </div>
 
 <script>
-const intro = document.getElementById("intro");
-const scene = document.getElementById("scene");
 
-intro.addEventListener("click", () => {
-  intro.style.display = "none";
-  scene.style.display = "block";
-  startHearts();
-  startSparkles();
-});
+const messages = [
+"Amina...",
+"Od trenutka kada sam te upoznao...",
+"Znao sam da si posebna.",
+"Svaka slika sa tobom čuva deo mog srca.",
+"Tvoj osmeh je moj mir.",
+"Tvoj zagrljaj je moj dom.",
+"I samo želim da znaš...",
+"Volim te više nego što reči mogu opisati."
+];
 
-/* HEARTS */
-function startHearts() {
-  setInterval(() => {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerHTML = "❤️";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.animationDuration = 6 + Math.random() * 6 + "s";
-    document.body.appendChild(h);
+let slideIndex = 0;
+let messageIndex = 0;
+let charIndex = 0;
 
-    setTimeout(() => h.remove(), 12000);
-  }, 500);
+const slides = document.querySelectorAll(".slide");
+const typed = document.getElementById("typed");
+const finalMessage = document.getElementById("final");
+
+function typeWriter() {
+    if (charIndex < messages[messageIndex].length) {
+        typed.innerHTML += messages[messageIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter, 55);
+    } else {
+        setTimeout(nextScene, 2500);
+    }
 }
 
-/* SPARKLES */
-const canvas = document.getElementById("sparkles");
-const ctx = canvas.getContext("2d");
+function nextScene() {
+    typed.innerHTML = "";
+    charIndex = 0;
+    messageIndex++;
 
-function resize() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+    if (messageIndex < messages.length) {
+        if (messageIndex % 3 === 0 && slideIndex < slides.length - 1) {
+            slides[slideIndex].classList.remove("active");
+            slideIndex++;
+            slides[slideIndex].classList.add("active");
+        }
+        setTimeout(typeWriter, 800);
+    } else {
+        finalMessage.style.opacity = "1";
+    }
 }
-resize();
-addEventListener("resize", resize);
 
-let stars = Array.from({length: 120}, () => ({
-  x: Math.random()*canvas.width,
-  y: Math.random()*canvas.height,
-  r: Math.random()*1.5 + .5,
-  a: Math.random()
-}));
+typeWriter();
 
-function startSparkles() {
-  function anim() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    stars.forEach(s => {
-      s.a += (Math.random()-.5)*.05;
-      ctx.globalAlpha = Math.max(.1, s.a);
-      ctx.fillStyle = "#fff";
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-      ctx.fill();
-    });
-    requestAnimationFrame(anim);
-  }
-  anim();
-}
 </script>
 
 </body>
