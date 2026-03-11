@@ -2,153 +2,126 @@
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amina.</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<title>Amina 💚</title>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
 
-body, html {
-    height:100%;
-    overflow:hidden;
-    background:black;
-    font-family: 'Playfair Display', serif;
-}
-
-.slide {
-    position:absolute;
-    width:100%;
-    height:100%;
-    background-size:cover;
-    background-position:center;
-    opacity:0;
-    transition:opacity 2s ease-in-out, transform 12s ease-in-out;
-    filter:brightness(70%);
-}
-
-.slide.active {
-    opacity:1;
-    transform:scale(1.08);
-}
-
-.overlay {
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
-}
-
-.text {
-    position:absolute;
-    top:50%;
-    width:100%;
-    transform:translateY(-50%);
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f9b0f,#a8e063);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     text-align:center;
-    color:#d4af37;
-    font-size:3.5rem;
-    letter-spacing:2px;
-    opacity:0;
-    transition:opacity 2s ease;
+    color:white;
 }
 
-.final {
-    position:absolute;
-    top:50%;
-    width:100%;
-    transform:translateY(-50%);
-    text-align:center;
-    font-size:5rem;
-    color:#d4af37;
-    letter-spacing:6px;
-    opacity:0;
-    transition:opacity 3s ease;
+.container{
+    background: rgba(0,0,0,0.3);
+    padding:50px;
+    border-radius:25px;
+    box-shadow:0 0 25px rgba(0,0,0,0.3);
+    max-width:600px;
 }
 
-.fade {
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:black;
-    opacity:0;
-    transition:opacity 4s ease;
+h1{
+    font-size:55px;
+    margin-bottom:10px;
 }
+
+p{
+    font-size:20px;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    background:#00ff88;
+    color:#003300;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+.heart{
+    position:fixed;
+    bottom:-10px;
+    font-size:20px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    100%{transform:translateY(-100vh);}
+}
+
 </style>
 </head>
 
 <body>
 
-<audio autoplay>
-    <source src="song.mp3" type="audio/mpeg">
-</audio>
+<div class="container">
 
-<div class="slide active" style="background-image:url('IMG-20251220-WA0012.jpg')"></div>
-<div class="slide" style="background-image:url('IMG-20251227-WA0035.jpg')"></div>
-<div class="slide" style="background-image:url('IMG-20251224-WA0002.jpg')"></div>
+<h1>Amina 💚</h1>
 
-<div class="overlay"></div>
-<div class="fade" id="fade"></div>
+<p>Danas slavimo <b>7 meseci naše veze</b>.</p>
 
-<div class="text" id="text"></div>
-<div class="final" id="final">AMINA.</div>
+<p>
+Amina 💚
+
+Postoje trenuci u životu koji prođu brzo, a postoje i oni koji ostanu zauvek u srcu. Ovih sedam meseci sa tobom su za mene nešto mnogo više od običnog vremena. Svaki dan sa tobom je bio priča za sebe, priča puna osmeha, lepih reči, zagrljaja i trenutaka koji se ne zaboravljaju.
+
+Pre nego što si ušla u moj život, sve je bilo obično. Dani su prolazili, ali ništa nije imalo onu posebnu iskru. A onda si se pojavila ti. Od tog trenutka sve je postalo drugačije. Tvoj osmeh je počeo da menja moje dane, tvoje reči su počele da mi donose mir, a tvoje prisustvo je postalo nešto bez čega više ne mogu da zamislim svoj svet.
+
+Sedam meseci možda nekome izgleda kao kratak period, ali za mene je to vreme u kojem sam shvatio koliko jedna osoba može da znači drugoj. Svaki razgovor sa tobom, svaka šala, svaki trenutak tišine koji smo podelili ima posebno mesto u mom srcu.
+
+Ti si osoba koja ume da pretvori običan dan u nešto posebno. Sa tobom i najjednostavniji trenutak postaje uspomena koju želim da čuvam zauvek. Tvoj glas, tvoj pogled, način na koji se smeješ – sve to je postalo deo mog života na najlepši mogući način.
+
+Želim da znaš da mi ovih sedam meseci znači mnogo više nego što reči mogu da objasne. Hvala ti što si tu. Hvala ti na svakom trenutku, na svakom osmehu i na svakoj emociji koju smo zajedno podelili.
+
+Ako me neko pita šta želim u budućnosti, moj odgovor je jednostavan – još mnogo meseci, još mnogo godina i još mnogo uspomena sa tobom.
+
+Srećnih 7 meseci veze, Amina.
+Ti si nešto najlepše što mi se dogodilo. 💚
+
+</p>
+
+<p>
+Ti si nešto najlepše što mi se desilo.
+</p>
+
+<button onclick="alert('Volim te najviše na svetu 💚')">
+Klikni ovde
+</button>
+
+</div>
 
 <script>
 
-const phrases = [
-"Neki susreti su slučajni.",
-"Neki pogledi menjaju sve.",
-"Neke ljubavi su večne.",
-"Ona nije samo ljubav.",
-"Ona je dom."
-];
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="💚";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(10+Math.random()*30)+"px";
+    document.body.appendChild(heart);
 
-let slideIndex = 0;
-let phraseIndex = 0;
-
-const slides = document.querySelectorAll(".slide");
-const text = document.getElementById("text");
-const final = document.getElementById("final");
-const fade = document.getElementById("fade");
-
-function showPhrase() {
-    if (phraseIndex < phrases.length) {
-        text.innerHTML = phrases[phraseIndex];
-        text.style.opacity = "1";
-
-        setTimeout(() => {
-            text.style.opacity = "0";
-        }, 3000);
-
-        if (phraseIndex % 2 === 1 && slideIndex < slides.length - 1) {
-            slides[slideIndex].classList.remove("active");
-            slideIndex++;
-            slides[slideIndex].classList.add("active");
-        }
-
-        phraseIndex++;
-        setTimeout(showPhrase, 4000);
-
-    } else {
-        setTimeout(showFinal, 2000);
-    }
+    setTimeout(()=>{
+        heart.remove()
+    },6000)
 }
 
-function showFinal() {
-    fade.style.opacity = "1";
-
-    setTimeout(() => {
-        final.style.opacity = "1";
-        fade.style.opacity = "0";
-    }, 4000);
-}
-
-showPhrase();
+setInterval(createHeart,500);
 
 </script>
 
 </body>
 </html>
-
-
-
