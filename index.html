@@ -53,30 +53,78 @@
 <body>
 
 <div class="container">
-  <img id="slika" src="slika1.jpg" alt="slika">
-  <div class="text" id="poruka">Ti si moj osmeh ❤️</div>
+  <img id="slika" src="slika-1.jpg" alt="slika">
+  <div class="text" id="poruka">Volim te ❤️</div>
   <br>
   <button onclick="sledecaSlika()">Sledeća ❤️</button>
 </div>
 
 <audio id="muzika" autoplay loop>
-  <source src="muzika.mp3" type="audio/mpeg">
+  <source src="song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  const slike = [
-    "slika1.jpg",
-    "slika2.jpg",
-    "slika3.jpg",
-    "slika4.jpg"
-  ];
-
+  const slike = [];
   const poruke = [
     "Ti si moj osmeh ❤️",
     "Fališ mi svaki dan 💭",
     "Najlepša si 💖",
-    "Volim te najviše ❤️"
+    "Volim te najviše ❤️",
+    "Ti si moje sunce ☀️",
+    "Bez tebe nema mene 💕",
+    "S tobom je svaki dan bajka 🌸",
+    "Moje srce kuca za tebe ❤️",
+    "Ti si moja zvezda 🌟",
+    "Zauvek tvoj 💌",
+    "S tobom sve je lakše 🌷",
+    "Tvoj osmeh je moj svet 😊",
+    "Ti si moj san 💭",
+    "Moja ljubav prema tebi je beskrajna ♾️",
+    "Ti me inspirišeš svakog dana ✨",
+    "Ti si moj mir 🕊️",
+    "S tobom je život lepši 🌹",
+    "Tvoje oči su moj svet 👀",
+    "Volim tvoj smeh 😂",
+    "Ti si moj razlog za sreću 🥰",
+    "Zauvek zajedno 💑",
+    "Ti si moj najbolji prijatelj i ljubav 🫂",
+    "Tvoj glas je muzika za moje uši 🎶",
+    "Svaki trenutak s tobom je dragocen 💎",
+    "Ti si moj svet 🌏",
+    "Volim tvoj stil 👗",
+    "Bez tebe sam izgubljen 😢",
+    "Ti si moj anđeo 😇",
+    "Tvoje ruke su moj dom 🏡",
+    "S tobom je svaki trenutak magičan ✨",
+    "Ti si moj oslonac 💪",
+    "Volim kad me grliš 🤗",
+    "Ti si moj motiv da budem bolji 🌟",
+    "Ti si moj raj na zemlji 🏝️",
+    "Tvoj osmeh me spašava 💖",
+    "Ti si moj avanturistički partner 🌄",
+    "Tvoj dodir greje moje srce 🔥",
+    "S tobom sve ima smisla 💌",
+    "Ti si moj heroj 🦸",
+    "Volim te više nego juče 💕",
+    "Ti si moje sve 🌹",
+    "Bez tebe ništa nije isto ⚡",
+    "Ti si moj razlog da sanjam 💭",
+    "Tvoj pogled topi moje srce 🥵",
+    "S tobom je život pesma 🎵",
+    "Ti si moj biser u moru 🦪",
+    "Volim kad se smeješ 😂",
+    "Ti si moj magnet ❤️‍🔥",
+    "Tvoje prisustvo me čini srećnim 🥰",
+    "S tobom je svaki dan praznik 🎉",
+    "Ti si moj svetionik 🌟",
+    "Volim te zauvek i više 💖",
+    "Ti si moj dom 🏡"
   ];
+
+  // Kreira niz slika od slika-1.jpg do slika-51.jpg
+  for (let i = 1; i <= 51; i++) {
+    slike.push(`slika-${i}.jpg`);
+  }
 
   let index = 0;
 
@@ -99,7 +147,7 @@
   }
 
   // automatsko menjanje na svakih 5 sekundi
-  setInterval(sledecaSlika, 5000);
+  setInterval(sledecaSlika, 2000);
 </script>
 
 </body>
