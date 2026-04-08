@@ -1,126 +1,105 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-<meta charset="UTF-8">
-<title>Amina 💚</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Za tebe ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #111, #1a1a1a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
 
-<style>
+    .container {
+      max-width: 90%;
+    }
 
-body{
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#0f9b0f,#a8e063);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    color:white;
-}
+    img {
+      max-width: 90vw;
+      max-height: 60vh;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.3);
+      transition: opacity 0.5s ease-in-out;
+    }
 
-.container{
-    background: rgba(0,0,0,0.3);
-    padding:50px;
-    border-radius:25px;
-    box-shadow:0 0 25px rgba(0,0,0,0.3);
-    max-width:600px;
-}
+    .text {
+      margin-top: 20px;
+      font-size: 22px;
+    }
 
-h1{
-    font-size:55px;
-    margin-bottom:10px;
-}
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: #ff4d6d;
+      color: white;
+    }
 
-p{
-    font-size:20px;
-}
-
-button{
-    margin-top:20px;
-    padding:12px 25px;
-    border:none;
-    border-radius:30px;
-    background:#00ff88;
-    color:#003300;
-    font-size:18px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    transform:scale(1.1);
-}
-
-.heart{
-    position:fixed;
-    bottom:-10px;
-    font-size:20px;
-    animation: float 6s linear infinite;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);}
-    100%{transform:translateY(-100vh);}
-}
-
-</style>
+    button:hover {
+      background: #ff1e4d;
+    }
+  </style>
 </head>
-
 <body>
 
 <div class="container">
-
-<h1>Amina 💚</h1>
-
-<p>Danas slavimo <b>7 meseci naše veze</b>.</p>
-
-<p>
-Amina 💚
-
-Postoje trenuci u životu koji prođu brzo, a postoje i oni koji ostanu zauvek u srcu. Ovih sedam meseci sa tobom su za mene nešto mnogo više od običnog vremena. Svaki dan sa tobom je bio priča za sebe, priča puna osmeha, lepih reči, zagrljaja i trenutaka koji se ne zaboravljaju.
-
-Pre nego što si ušla u moj život, sve je bilo obično. Dani su prolazili, ali ništa nije imalo onu posebnu iskru. A onda si se pojavila ti. Od tog trenutka sve je postalo drugačije. Tvoj osmeh je počeo da menja moje dane, tvoje reči su počele da mi donose mir, a tvoje prisustvo je postalo nešto bez čega više ne mogu da zamislim svoj svet.
-
-Sedam meseci možda nekome izgleda kao kratak period, ali za mene je to vreme u kojem sam shvatio koliko jedna osoba može da znači drugoj. Svaki razgovor sa tobom, svaka šala, svaki trenutak tišine koji smo podelili ima posebno mesto u mom srcu.
-
-Ti si osoba koja ume da pretvori običan dan u nešto posebno. Sa tobom i najjednostavniji trenutak postaje uspomena koju želim da čuvam zauvek. Tvoj glas, tvoj pogled, način na koji se smeješ – sve to je postalo deo mog života na najlepši mogući način.
-
-Želim da znaš da mi ovih sedam meseci znači mnogo više nego što reči mogu da objasne. Hvala ti što si tu. Hvala ti na svakom trenutku, na svakom osmehu i na svakoj emociji koju smo zajedno podelili.
-
-Ako me neko pita šta želim u budućnosti, moj odgovor je jednostavan – još mnogo meseci, još mnogo godina i još mnogo uspomena sa tobom.
-
-Srećnih 7 meseci veze, Amina.
-Ti si nešto najlepše što mi se dogodilo. 💚
-
-</p>
-
-<p>
-Ti si nešto najlepše što mi se desilo.
-</p>
-
-<button onclick="alert('Volim te najviše na svetu 💚')">
-Klikni ovde
-</button>
-
+  <img id="slika" src="slika1.jpg" alt="slika">
+  <div class="text" id="poruka">Ti si moj osmeh ❤️</div>
+  <br>
+  <button onclick="sledecaSlika()">Sledeća ❤️</button>
 </div>
 
+<audio id="muzika" autoplay loop>
+  <source src="muzika.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+  const slike = [
+    "slika1.jpg",
+    "slika2.jpg",
+    "slika3.jpg",
+    "slika4.jpg"
+  ];
 
-function createHeart(){
-    const heart=document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML="💚";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(10+Math.random()*30)+"px";
-    document.body.appendChild(heart);
+  const poruke = [
+    "Ti si moj osmeh ❤️",
+    "Fališ mi svaki dan 💭",
+    "Najlepša si 💖",
+    "Volim te najviše ❤️"
+  ];
 
-    setTimeout(()=>{
-        heart.remove()
-    },6000)
-}
+  let index = 0;
 
-setInterval(createHeart,500);
+  function sledecaSlika() {
+    index++;
 
+    if (index >= slike.length) {
+      alert("To je to... ali ne i kraj ❤️ Volim te najviše 💖");
+      index = 0;
+    }
+
+    const img = document.getElementById("slika");
+    img.style.opacity = 0;
+
+    setTimeout(() => {
+      img.src = slike[index];
+      document.getElementById("poruka").innerText = poruke[index];
+      img.style.opacity = 1;
+    }, 300);
+  }
+
+  // automatsko menjanje na svakih 5 sekundi
+  setInterval(sledecaSlika, 5000);
 </script>
 
 </body>
