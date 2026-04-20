@@ -2,40 +2,54 @@
 <html>
 <head>
   <title>Stisni me</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 120px;
+    }
+
+    button {
+      font-size: 22px;
+      padding: 12px 25px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
-<body style="text-align:center; margin-top:100px;">
+<body>
 
-  <button onclick="sendSMS()" style="font-size:20px;">
-    Stisni me
-  </button>
+  <h1>Klikni dugme 😊</h1>
+
+  <button onclick="sendSMS()">Stisni me</button>
 
   <script>
     async function sendSMS() {
-      const res = await fetch("https://textbelt.com/text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          phone: "+491784017373",
-          message: "Hej 😊 volim te",
-          key: "textbelt" // free demo key
-        })
-      });
+      try {
+        const res = await fetch("https://amina-y8m3.vercel.app/api/send-sms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            phone: "+491784017373",
+            message: "Hej 😊 volim te"
+          })
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (data.success) {
-        alert("SMS poslat!");
-      } else {
-        alert("Greška: " + data.error);
+        if (data.success) {
+          alert("Poruka poslata ❤️");
+        } else {
+          alert("Greška: " + (data.error || "nepoznato"));
+        }
+
+      } catch (err) {
+        alert("Server greška");
       }
-
-      console.log(data);
     }
   </script>
 
 </body>
 </html>
-
