@@ -1,153 +1,28 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Za tebe ❤️</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #111, #1a1a1a);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: white;
-      text-align: center;
-    }
-
-    .container {
-      max-width: 90%;
-    }
-
-    img {
-      max-width: 90vw;
-      max-height: 60vh;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255,255,255,0.3);
-      transition: opacity 0.5s ease-in-out;
-    }
-
-    .text {
-      margin-top: 20px;
-      font-size: 22px;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: #ff4d6d;
-      color: white;
-    }
-
-    button:hover {
-      background: #ff1e4d;
-    }
-  </style>
+  <title>Moja stranica</title>
 </head>
+
 <body>
 
-<div class="container">
-  <img id="slika" src="slika-1.jpg" alt="slika">
-  <div class="text" id="poruka">Volim te ❤️</div>
-  <br>
-  <button onclick="sledecaSlika()">Sledeća ❤️</button>
-</div>
-
-<audio id="muzika" autoplay loop>
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
+<button onclick="sendSMS()">Stisni me</button>
 
 <script>
-  const slike = [];
-  const poruke = [
-    "Ti si moj osmeh ❤️",
-    "Fališ mi svaki dan 💭",
-    "Najlepša si 💖",
-    "Volim te najviše ❤️",
-    "Ti si moje sunce ☀️",
-    "Bez tebe nema mene 💕",
-    "S tobom je svaki dan bajka 🌸",
-    "Moje srce kuca za tebe ❤️",
-    "Ti si moja zvezda 🌟",
-    "Zauvek tvoj 💌",
-    "S tobom sve je lakše 🌷",
-    "Tvoj osmeh je moj svet 😊",
-    "Ti si moj san 💭",
-    "Moja ljubav prema tebi je beskrajna ♾️",
-    "Ti me inspirišeš svakog dana ✨",
-    "Ti si moj mir 🕊️",
-    "S tobom je život lepši 🌹",
-    "Tvoje oči su moj svet 👀",
-    "Volim tvoj smeh 😂",
-    "Ti si moj razlog za sreću 🥰",
-    "Zauvek zajedno 💑",
-    "Ti si moj najbolji prijatelj i ljubav 🫂",
-    "Tvoj glas je muzika za moje uši 🎶",
-    "Svaki trenutak s tobom je dragocen 💎",
-    "Ti si moj svet 🌏",
-    "Volim tvoj stil 👗",
-    "Bez tebe sam izgubljen 😢",
-    "Ti si moj anđeo 😇",
-    "Tvoje ruke su moj dom 🏡",
-    "S tobom je svaki trenutak magičan ✨",
-    "Ti si moj oslonac 💪",
-    "Volim kad me grliš 🤗",
-    "Ti si moj motiv da budem bolji 🌟",
-    "Ti si moj raj na zemlji 🏝️",
-    "Tvoj osmeh me spašava 💖",
-    "Ti si moj avanturistički partner 🌄",
-    "Tvoj dodir greje moje srce 🔥",
-    "S tobom sve ima smisla 💌",
-    "Ti si moj heroj 🦸",
-    "Volim te više nego juče 💕",
-    "Ti si moje sve 🌹",
-    "Bez tebe ništa nije isto ⚡",
-    "Ti si moj razlog da sanjam 💭",
-    "Tvoj pogled topi moje srce 🥵",
-    "S tobom je život pesma 🎵",
-    "Ti si moj biser u moru 🦪",
-    "Volim kad se smeješ 😂",
-    "Ti si moj magnet ❤️‍🔥",
-    "Tvoje prisustvo me čini srećnim 🥰",
-    "S tobom je svaki dan praznik 🎉",
-    "Ti si moj svetionik 🌟",
-    "Volim te zauvek i više 💖",
-    "Ti si moj dom 🏡"
-  ];
+async function sendSMS() {
+  await fetch("https://amina-5651.vercel.app/api/send-sms", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      number: "+491784017373",
+      message: "Hej 😊 Volim te"
+    })
+  });
 
-  // Kreira niz slika od slika-1.jpg do slika-51.jpg
-  for (let i = 1; i <= 51; i++) {
-    slike.push(`slika-${i}.jpg`);
-  }
-
-  let index = 0;
-
-  function sledecaSlika() {
-    index++;
-
-    if (index >= slike.length) {
-      alert("To je to... ali ne i kraj ❤️ Volim te najviše 💖");
-      index = 0;
-    }
-
-    const img = document.getElementById("slika");
-    img.style.opacity = 0;
-
-    setTimeout(() => {
-      img.src = slike[index];
-      document.getElementById("poruka").innerText = poruke[index];
-      img.style.opacity = 1;
-    }, 300);
-  }
-
-  // automatsko menjanje na svakih 5 sekundi
-  setInterval(sledecaSlika, 2000);
+  alert("Poslato!");
+}
 </script>
 
 </body>
