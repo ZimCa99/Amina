@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Moja stranica</title>
+  <title>Stisni me</title>
 </head>
 
-<body>
+<body style="text-align:center; margin-top:100px;">
 
-<button onclick="sendSMS()">Stisni me</button>
+  <button onclick="sendSMS()" style="font-size:20px;">
+    Stisni me
+  </button>
 
-<script>
-async function sendSMS() {
-  await fetch("https://amina-5651.vercel.app/api/send-sms", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      number: "+491784017373",
-      message: "Hej 😊 Volim te"
-    })
-  });
+  <script>
+    async function sendSMS() {
+      const res = await fetch("https://textbelt.com/text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          phone: "+491784017373",
+          message: "Hej 😊 volim te",
+          key: "textbelt" // free demo key
+        })
+      });
 
-  alert("Poslato!");
-}
-</script>
+      const data = await res.json();
+
+      if (data.success) {
+        alert("SMS poslat!");
+      } else {
+        alert("Greška: " + data.error);
+      }
+
+      console.log(data);
+    }
+  </script>
 
 </body>
 </html>
+
