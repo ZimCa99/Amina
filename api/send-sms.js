@@ -3,26 +3,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Only POST allowed" });
   }
 
-  const { number, message } = req.body;
+  const { phone, message } = req.body;
 
   try {
-    const response = await fetch("https://rest.messagebird.com/messages", {
+    const response = await fetch("https://textbelt.com/text", {
       method: "POST",
       headers: {
-        "Authorization": `AccessKey ${process.env.MESSAGEBIRD_KEY}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        originator: "Sajt",
-        recipients: [number],
-        body: message,
-      }),
+        phone,
+        message,
+        key: "textbelt"
+      })
     });
 
     const data = await response.json();
     res.status(200).json(data);
 
   } catch (err) {
-    res.status(500).json({ error: "Failed to send SMS" });
+    res.status(500).json({ error: "Server error" });
   }
 }
