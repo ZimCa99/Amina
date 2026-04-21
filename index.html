@@ -1,70 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Naš Chat ❤️</title>
   <style>
-    body { font-family: Arial; text-align: center; }
-    #chat { height: 300px; overflow-y: scroll; border: 1px solid #ccc; margin: 10px; padding: 10px;}
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      text-align: center;
+    }
+
+    .box {
+      width: 300px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #222;
+      border-radius: 10px;
+    }
+
+    input, button {
+      width: 90%;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+    }
+
+    #chat {
+      height: 300px;
+      overflow-y: scroll;
+      background: #000;
+      padding: 10px;
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    .msg {
+      margin: 5px 0;
+    }
   </style>
 </head>
+
 <body>
 
-<h2>Login</h2>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
+<div class="box" id="loginBox">
+  <h2>Login ❤️</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Uloguj se</button>
+</div>
 
-<div id="chatSection" style="display:none;">
-  <h2>Naš chat ❤️</h2>
+<div class="box" id="chatBox" style="display:none;">
+  <h2>Naš Chat ❤️</h2>
+
   <div id="chat"></div>
+
   <input id="message" placeholder="Poruka">
   <button onclick="sendMessage()">Pošalji</button>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<script>
+// 🔥 UBACI SVOJ CONFIG OVDE
 const firebaseConfig = {
-    apiKey: "AIzaSyCQsgFOR4maEw30ObQ-hAza5SxPdGx_lDY",
-    authDomain: "amina-84d43.firebaseapp.com",
-    projectId: "amina-84d43",
-    storageBucket: "amina-84d43.firebasestorage.app",
-    messagingSenderId: "137838164245",
-    appId: "1:137838164245:web:9ea2a5f56614416f21d11c",
-    measurementId: "G-NLQQC1K5Z7"
-  };
+  apiKey: "AIzaSyCQsgFOR4maEw30ObQ-hAza5SxPdGx_lDY",
+  authDomain: "amina-84d43.firebaseapp.com",
+  projectId: "amina-84d43",
+  storageBucket: "amina-84d43.firebasestorage.app",
+  messagingSenderId: "137838164245",
+  appId: "1:137838164245:web:9ea2a5f56614416f21d11c",
+  measurementId: "G-NLQQC1K5Z7"
+};
 
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 let currentUser = "";
 
-// SAMO 2 USERA
+// 👤 SAMO VAS DVOJE
 const users = [
   { username: "ti", password: "123" },
   { username: "ona", password: "456" }
 ];
 
-function login() {
+// LOGIN
+window.login = function () {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
 
-  const valid = users.find(user => user.username === u && user.password === p);
+  const valid = users.find(x => x.username === u && x.password === p);
 
   if(valid){
     currentUser = u;
-    document.getElementById("chatSection").style.display = "block";
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("chatBox").style.display = "block";
     loadMessages();
   } else {
-    alert("Pogrešan login!");
+    alert("Pogrešan login 😢");
   }
 }
 
-function sendMessage() {
+// SLANJE PORUKE
+window.sendMessage = async function () {
   const msg = document.getElementById("message").value;
 
-  db.collection("messages").add({
+  if(msg.trim() === "") return;
+
+  await addDoc(collection(db, "messages"), {
     user: currentUser,
     text: msg,
     time: Date.now()
@@ -73,20 +124,23 @@ function sendMessage() {
   document.getElementById("message").value = "";
 }
 
+// UCITAVANJE PORUKA
 function loadMessages() {
-  db.collection("messages")
-    .orderBy("time")
-    .onSnapshot(snapshot => {
-      const chat = document.getElementById("chat");
-      chat.innerHTML = "";
+  const q = query(collection(db, "messages"), orderBy("time"));
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        chat.innerHTML += `<p><b>${data.user}:</b> ${data.text}</p>`;
-      });
+  onSnapshot(q, (snapshot) => {
+    const chat = document.getElementById("chat");
+    chat.innerHTML = "";
 
-      chat.scrollTop = chat.scrollHeight;
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      chat.innerHTML += `
+        <div class="msg"><b>${d.user}:</b> ${d.text}</div>
+      `;
     });
+
+    chat.scrollTop = chat.scrollHeight;
+  });
 }
 </script>
 
