@@ -1,55 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stisni me</title>
+  <title>Naš Chat ❤️</title>
   <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      margin-top: 120px;
-    }
-
-    button {
-      font-size: 22px;
-      padding: 12px 25px;
-      cursor: pointer;
-    }
+    body { font-family: Arial; text-align: center; }
+    #chat { height: 300px; overflow-y: scroll; border: 1px solid #ccc; margin: 10px; padding: 10px;}
   </style>
 </head>
-
 <body>
 
-  <h1>Klikni dugme 😊</h1>
+<h2>Login</h2>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
 
-  <button onclick="sendSMS()">Stisni me</button>
+<div id="chatSection" style="display:none;">
+  <h2>Naš chat ❤️</h2>
+  <div id="chat"></div>
+  <input id="message" placeholder="Poruka">
+  <button onclick="sendMessage()">Pošalji</button>
+</div>
 
-  <script>
-    async function sendSMS() {
-      try {
-        const res = await fetch("https://amina-y8m3.vercel.app/api/send-sms", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            phone: "+491784017373",
-            message: "Hej 😊 volim te"
-          })
-        });
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
 
-        const data = await res.json();
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyCQsgFOR4maEw30ObQ-hAza5SxPdGx_lDY",
+    authDomain: "amina-84d43.firebaseapp.com",
+    projectId: "amina-84d43",
+    storageBucket: "amina-84d43.firebasestorage.app",
+    messagingSenderId: "137838164245",
+    appId: "1:137838164245:web:9ea2a5f56614416f21d11c",
+    measurementId: "G-NLQQC1K5Z7"
+  };
 
-        if (data.success) {
-          alert("Poruka poslata ❤️");
-        } else {
-          alert("Greška: " + (data.error || "nepoznato"));
-        }
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-      } catch (err) {
-        alert("Server greška");
-      }
-    }
-  </script>
+let currentUser = "";
+
+// SAMO 2 USERA
+const users = [
+  { username: "ti", password: "123" },
+  { username: "ona", password: "456" }
+];
+
+function login() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+
+  const valid = users.find(user => user.username === u && user.password === p);
+
+  if(valid){
+    currentUser = u;
+    document.getElementById("chatSection").style.display = "block";
+    loadMessages();
+  } else {
+    alert("Pogrešan login!");
+  }
+}
+
+function sendMessage() {
+  const msg = document.getElementById("message").value;
+
+  db.collection("messages").add({
+    user: currentUser,
+    text: msg,
+    time: Date.now()
+  });
+
+  document.getElementById("message").value = "";
+}
+
+function loadMessages() {
+  db.collection("messages")
+    .orderBy("time")
+    .onSnapshot(snapshot => {
+      const chat = document.getElementById("chat");
+      chat.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        chat.innerHTML += `<p><b>${data.user}:</b> ${data.text}</p>`;
+      });
+
+      chat.scrollTop = chat.scrollHeight;
+    });
+}
+</script>
 
 </body>
 </html>
